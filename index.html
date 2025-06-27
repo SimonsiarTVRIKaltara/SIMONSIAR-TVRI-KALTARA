@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMONSIAR - TVRI Kaltara</title>
+    <link rel="icon" href="logo-tvri-kaltara.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-logo">
+            <img src="logo-tvri-kaltara.png" alt="Logo TVRI Kaltara">
+            <h1>SIMONSIAR TVRI KALTARA</h1>
+        </div>
+        <div class="header-datetime">
+            <span id="realtime-date"></span><br>
+            <span id="realtime-clock"></span>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <div id="halaman-muka">
+            <center><h2 class="main-title">SISTEM MONITORING DAN PELAPORAN GANGGUAN SIARAN TVRI STASIUN KALIMANTAN UTARA</h2></center>
+            <div class="features">
+                <div class="feature-card" data-page="lapor-cepat"><h3>Lapor Cepat Gangguan Siaran</h3><p>Kirim laporan gangguan siaran secara cepat ke petugas studio.</p></div>
+                <div class="feature-card" data-page="upload-monitoring"><h3>Upload Laporan Monitoring</h3><p>Unggah dokumen laporan monitoring siaran harian.</p></div>
+                <div class="feature-card" data-page="riwayat-gangguan"><h3>Riwayat Laporan Gangguan</h3><p>Lihat semua riwayat laporan gangguan yang pernah dikirim.</p></div>
+                <div class="feature-card" data-page="riwayat-monitoring"><h3>Riwayat Laporan Monitoring</h3><p>Lihat arsip dokumen laporan monitoring yang telah diunggah.</p></div>
+            </div>
+        </div>
+
+        <div id="lapor-cepat" class="form-container" style="display:none;">
+            <h2>Lapor Cepat Gangguan Siaran</h2>
+            <form id="form-lapor-cepat">
+                <div class="form-group"><label for="nama-petugas-pemancar">Nama Petugas Pemancar</label><select id="nama-petugas-pemancar" required><option value="">Pilih Nama Petugas</option><option value="Abdan Syakuro">Abdan Syakuro</option><option value="Alviana Damayanti">Alviana Damayanti</option><option value="Andi Fairul Amri">Andi Fairul Amri</option><option value="Ari Ardiansyah">Ari Ardiansyah</option><option value="Bahrin">Bahrin</option><option value="Ina Apriani">Ina Apriani</option><option value="Muh. Fadil Perkasa">Muh. Fadil Perkasa</option><option value="M. Iswansyah Nur">M. Iswansyah Nur</option><option value="R. Aulia Rahman">R. Aulia Rahman</option><option value="Rahma Elvira Ariyanti">Rahma Elvira Ariyanti</option><option value="Ramazona Nababan">Ramazona Nababan</option><option value="Widhiono">Widhiono</option><option value="Wira A.G">Wira A.G</option></select></div>
+                <div class="form-group"><label>Tanggal & Waktu Laporan</label><input type="text" id="tanggal-laporan" readonly></div>
+                <div class="form-group"><label for="jenis-gangguan">Jenis Gangguan/Kendala</label><select id="jenis-gangguan" required><option value="">Pilih Jenis Gangguan</option><option value="Audio">Audio</option><option value="Visual">Visual</option><option value="Informasi Berjalan">Informasi Berjalan</option><option value="Lainnya">Lainnya</option></select></div>
+                <div class="form-group"><label for="deskripsi-masalah">Deskripsi Masalah</label><textarea id="deskripsi-masalah" placeholder="Jelaskan detail gangguan di sini..." required></textarea></div>
+                <div class="form-group"><label for="NOTE">PERHATIAN! Harap lampirkan dokumentasi secara manual.</label></div>
+                <button type="submit" class="btn">Kirim Laporan Gangguan</button>
+            </form>
+            <button class="btn btn-back">Kembali ke Menu Utama</button>
+        </div>
+
+        <div id="upload-monitoring" class="form-container" style="display:none;">
+            <h2>Upload Laporan Monitoring</h2>
+            <form id="form-upload">
+                <div class="form-group"><label>Tanggal Monitoring</label><input type="text" id="tanggal-monitoring" readonly></div>
+                <div class="form-group"><label for="shift-petugas">Shift</label><select id="shift-petugas" required><option value="">Pilih Shift</option><option value="1">Shift 1</option><option value="2">Shift 2</option><option value="3">Shift 3</option></select></div>
+                <div class="form-group"><label for="nama-petugas-monitoring">Nama Petugas</label><input type="text" id="nama-petugas-monitoring" required></div>
+                <div class="form-group"><label for="file-laporan">Pilih File Laporan untuk Diupload</label><input type="file" id="file-laporan" required></div>
+                <button type="submit" class="btn">Submit Laporan Monitoring</button>
+                <div id="upload-status"></div>
+            </form>
+            <button class="btn btn-back">Kembali ke Menu Utama</button>
+        </div>
+
+        <div id="riwayat-gangguan" class="table-container" style="display:none;">
+            <h2>Riwayat Laporan Gangguan Siaran</h2>
+            <table>
+                <thead>
+                    <tr><th>Tanggal</th><th>Waktu</th><th>Petugas Pemancar</th><th>Jenis Gangguan</th><th>Deskripsi</th></tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <button class="btn btn-back">Kembali ke Menu Utama</button>
+        </div>
+
+        <div id="riwayat-monitoring" class="table-container" style="display:none;">
+            <h2>Riwayat Laporan Monitoring</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tanggal Upload</th>
+                        <th>Shift</th>
+                        <th>Nama Petugas</th>
+                        <th>Nama File</th>
+                        <th>Link File</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+            <a href="https://drive.google.com/drive/folders/1jrLWfcRWSZS0gG963X23PbAG6hA_qaoP?usp=sharing" target="_blank" class="btn" style="margin-top:30px;">Buka Folder Lengkap Laporan</a>
+            <button class="btn btn-back" style="margin-top:15px;">Kembali ke Menu Utama</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 - SIMONSIAR TVRI Kalimantan Utara.</p>
+        <p> Create by WIRA AHMAD GAZALI</p>
+    </footer>
+
+    <a href="https://wa.me/6285248766203?text=Halo%2C%20Saya%20butuh%20bantuan%20dengan%20aplikasi%20SIMONSIAR" class="tombol-bantuan-wa" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        <span>Bantuan</span>
+    </a>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // --- 1. KONFIGURASI PENTING ---
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybApovHzPaZLsKWhC5XsEgzSCvFnU2EdqjbGVYCfDRKqRvNb5UUwyyUJiov58gyhKD/exec";
+        const NOMOR_WA_TUJUAN = "6282250781658";
+
+        // --- 2. DEFINISI FUNGSI ---
+        function updateClock() {
+            const now = new Date();
+            const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const tanggalLengkap = now.toLocaleDateString('id-ID', optionsDate);
+            const waktuLengkap = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById("realtime-date").textContent = tanggalLengkap;
+            document.getElementById("realtime-clock").textContent = `Pukul: ${waktuLengkap.replace(/\./g, ':')}`;
+            const inputTanggalLaporan = document.getElementById("tanggal-laporan");
+            if (inputTanggalLaporan) {
+                inputTanggalLaporan.value = `${tanggalLengkap} - ${now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace(/\./g, ':')}`;
+            }
+            const inputTanggalMonitoring = document.getElementById("tanggal-monitoring");
+            if (inputTanggalMonitoring) {
+                inputTanggalMonitoring.value = tanggalLengkap;
+            }
+        }
+        
+        // --- PERUBAHAN DI SINI: Logika untuk memuat riwayat monitoring ditambahkan ---
+        function tampilkanHalaman(halamanId) {
+            document.querySelectorAll("main > div").forEach(div => {
+                div.style.display = "none";
+            });
+            const halaman = document.getElementById(halamanId);
+            if (halaman) {
+                halaman.style.display = "block";
+                sessionStorage.setItem('halamanAktif', halamanId);
+                if (halamanId === 'riwayat-gangguan') {
+                    muatRiwayatGangguan();
+                }
+                if (halamanId === 'riwayat-monitoring') {
+                    muatRiwayatMonitoring();
+                }
+            }
+        }
+
+        function kembaliKeHalamanMuka() {
+            document.querySelectorAll("main > div").forEach(div => {
+                div.style.display = "none";
+            });
+            document.getElementById("halaman-muka").style.display = "block";
+            sessionStorage.removeItem('halamanAktif');
+        }
+
+        function muatRiwayatGangguan() {
+            const tableBody = document.querySelector("#riwayat-gangguan tbody");
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Memuat riwayat...</td></tr>';
+            fetch(SCRIPT_URL + "?action=getRiwayat")
+                .then(res => res.json())
+                .then(data => {
+                    tableBody.innerHTML = "";
+                    if (data.riwayat && data.riwayat.length > 0) {
+                        data.riwayat.reverse().forEach(row => {
+                            const tr = document.createElement("tr");
+                            const [tanggal, waktu] = (row.waktuLengkap || " - ").split(' - ');
+                            tr.innerHTML = `<td>${tanggal ? tanggal.trim() : ''}</td><td>${waktu ? waktu.trim() : ''}</td><td>${row.nama || ''}</td><td>${row.jenis || ''}</td><td>${row.deskripsi || ''}</td>`;
+                            tableBody.appendChild(tr);
+                        });
+                    } else {
+                        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Belum ada riwayat laporan.</td></tr>';
+                    }
+                })
+                .catch(error => {
+                    console.error("Gagal mengambil riwayat gangguan:", error);
+                    tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Gagal memuat riwayat. Error: ${error.message}</td></tr>`;
+                });
+        }
+        
+        // --- PENAMBAHAN FUNGSI BARU ---
+        function muatRiwayatMonitoring() {
+            const tableBody = document.querySelector("#riwayat-monitoring tbody");
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Memuat riwayat...</td></tr>';
+            fetch(SCRIPT_URL + "?action=getRiwayatMonitoring")
+                .then(res => {
+                    if (!res.ok) { throw new Error('Response jaringan bermasalah'); }
+                    return res.json();
+                })
+                .then(data => {
+                    tableBody.innerHTML = "";
+                    if (data.riwayat && data.riwayat.length > 0) {
+                        data.riwayat.reverse().forEach(row => {
+                            const tr = document.createElement("tr");
+                            tr.innerHTML = `<td>${row.tanggal || ''}</td><td>${row.shift || ''}</td><td>${row.namaPetugas || ''}</td><td>${row.namaFile || ''}</td><td><a href="${row.linkFile}" target="_blank">Buka</a></td>`;
+                            tableBody.appendChild(tr);
+                        });
+                    } else {
+                        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Belum ada riwayat laporan monitoring.</td></tr>';
+                    }
+                })
+                .catch(error => {
+                    console.error("Gagal mengambil riwayat monitoring:", error);
+                    tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Gagal memuat riwayat. Pastikan Google Script sudah diperbarui. Error: ${error.message}</td></tr>`;
+                });
+        }
+
+        // --- 3. EVENT LISTENERS & EKSEKUSI AWAL ---
+        document.querySelectorAll('.btn-back').forEach(button => {
+            button.addEventListener('click', kembaliKeHalamanMuka);
+        });
+
+        document.querySelector('.features').addEventListener('click', function(e) {
+            const card = e.target.closest('.feature-card');
+            if (card && card.dataset.page) {
+                tampilkanHalaman(card.dataset.page);
+            }
+        });
+
+        document.getElementById("form-lapor-cepat").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const submitButton = this.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = "Mengirim...";
+            const reportData = {
+                action: "tambahLaporan",
+                nama: document.getElementById("nama-petugas-pemancar").value,
+                waktuLengkap: document.getElementById("tanggal-laporan").value,
+                jenis: document.getElementById("jenis-gangguan").value,
+                deskripsi: document.getElementById("deskripsi-masalah").value
+            };
+            const pesanWa = `*LAPORAN GANGGUAN SIARAN*\n\n*Nama Petugas Pemancar:* ${reportData.nama}\n*Tanggal & Waktu:* ${reportData.waktuLengkap}\n*Jenis Gangguan:* ${reportData.jenis}\n*Deskripsi Masalah:*\n${reportData.deskripsi}\n\n_Mohon segera ditindaklanjuti. Terima Kasih._`;
+            const urlWa = `https://api.whatsapp.com/send?phone=${NOMOR_WA_TUJUAN}&text=${encodeURIComponent(pesanWa)}`;
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(reportData) })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'sukses') {
+                    alert("Laporan berhasil disimpan dan akan dikirim via WhatsApp.");
+                    window.open(urlWa, "_blank");
+                    this.reset();
+                    kembaliKeHalamanMuka();
+                } else {
+                    throw new Error(data.message || "Terjadi kesalahan dari server.");
+                }
+            })
+            .catch(err => {
+                console.error('Gagal menyimpan laporan:', err);
+                alert('GAGAL menyimpan laporan ke riwayat. Laporan HANYA akan dikirim via WhatsApp.');
+                window.open(urlWa, "_blank");
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = "Kirim Laporan Gangguan";
+            });
+        });
+
+        // --- PERUBAHAN DI SINI: Form upload kini mengirim data petugas ---
+        document.getElementById('form-upload').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const uploadButton = this.querySelector('button');
+            const fileInput = document.getElementById('file-laporan');
+            const uploadStatus = document.getElementById('upload-status');
+            const namaPetugas = document.getElementById('nama-petugas-monitoring').value;
+            const shift = document.getElementById('shift-petugas').value;
+            const tanggal = document.getElementById('tanggal-monitoring').value;
+
+            if (fileInput.files.length === 0 || !namaPetugas || !shift) {
+                alert("Harap lengkapi semua field: Nama Petugas, Shift, dan File Laporan.");
+                return;
+            }
+
+            uploadButton.disabled = true;
+            uploadStatus.textContent = 'Mengupload file, mohon tunggu...';
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(event) {
+                const fileData = event.target.result.split(',');
+                const fileInfo = {
+                    action: "uploadFile",
+                    name: file.name,
+                    type: file.type,
+                    base64: fileData[1],
+                    namaPetugas: namaPetugas,
+                    shift: shift,
+                    tanggal: tanggal
+                };
+                fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(fileInfo) })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'sukses') {
+                        uploadStatus.textContent = `Berhasil! File "${data.fileName}" telah diupload.`;
+                        alert(`Upload Berhasil!\nFile "${data.fileName}" telah tersimpan.`);
+                        e.target.reset();
+                    } else { throw new Error(data.message); }
+                })
+                .catch(err => {
+                    console.error('Upload Error:', err);
+                    uploadStatus.textContent = 'Upload Gagal. Lihat konsol (F12) untuk detail.';
+                    alert('Upload Gagal. Pastikan URL Script sudah benar dan script telah dideploy dengan benar.');
+                })
+                .finally(() => { uploadButton.disabled = false; });
+            };
+            reader.onerror = function() {
+                alert('Gagal membaca file.');
+                uploadButton.disabled = false;
+                uploadStatus.textContent = '';
+            };
+        });
+        
+        const halamanTersimpan = sessionStorage.getItem('halamanAktif');
+        if (halamanTersimpan) {
+            tampilkanHalaman(halamanTersimpan);
+        } else {
+            kembaliKeHalamanMuka();
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+    });
+    </script>
+
+</body>
+</html>
