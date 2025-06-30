@@ -123,12 +123,7 @@
             }
         }
         
-        /**
-         * --- PERUBAHAN 1 ---
-         * Menambahkan jejak ke riwayat browser saat pindah ke halaman fitur.
-         */
         function tampilkanHalaman(halamanId) {
-            // Cek apakah kita sedang berada di halaman muka sebelum pindah
             const sedangDiHalamanMuka = document.getElementById('halaman-muka').style.display !== 'none';
 
             document.querySelectorAll("main > div").forEach(div => {
@@ -145,7 +140,6 @@
                     muatRiwayatMonitoring();
                 }
 
-                // Jika kita pindah dari halaman muka ke halaman lain, buat 'jejak'
                 if (sedangDiHalamanMuka && halamanId !== 'halaman-muka') {
                     history.pushState({page: halamanId}, null, "#" + halamanId);
                 }
@@ -158,11 +152,9 @@
             });
             document.getElementById("halaman-muka").style.display = "block";
             sessionStorage.removeItem('halamanAktif');
-            // Hapus hash dari URL
             history.pushState({page: 'halaman-muka'}, null, window.location.pathname);
         }
 
-        // ... (Fungsi muatRiwayatGangguan dan muatRiwayatMonitoring tetap sama) ...
         function muatRiwayatGangguan() {
             const tableBody = document.querySelector("#riwayat-gangguan tbody");
             tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Memuat riwayat...</td></tr>';
@@ -215,15 +207,10 @@
 
         // --- 3. EVENT LISTENERS & EKSEKUSI AWAL ---
 
-        /**
-         * --- PERUBAHAN 2 ---
-         * Tombol kembali di halaman sekarang menggunakan history.back()
-         * untuk memicu 'popstate' listener.
-         */
         document.querySelectorAll('.btn-back').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
-                history.back(); // Memicu event 'popstate'
+                history.back();
             });
         });
 
@@ -234,12 +221,13 @@
             }
         });
 
-        // ... (Kode form-lapor-cepat dan form-upload tetap sama) ...
+        // ### KODE YANG DIPERBAIKI ###
         document.getElementById("form-lapor-cepat").addEventListener("submit", function(e) {
             e.preventDefault();
             const submitButton = this.querySelector('button[type="submit"]');
             submitButton.disabled = true;
             submitButton.textContent = "Mengirim...";
+            
             const reportData = {
                 action: "tambahLaporan",
                 nama: document.getElementById("nama-petugas-pemancar").value,
@@ -247,30 +235,37 @@
                 jenis: document.getElementById("jenis-gangguan").value,
                 deskripsi: document.getElementById("deskripsi-masalah").value
             };
+            
+            // Siapkan pesan dan URL WhatsApp
             const pesanWa = `*LAPORAN GANGGUAN SIARAN*\n\n*Nama Petugas Pemancar:* ${reportData.nama}\n*Tanggal & Waktu:* ${reportData.waktuLengkap}\n*Jenis Gangguan:* ${reportData.jenis}\n*Deskripsi Masalah:*\n${reportData.deskripsi}\n\n_Mohon segera ditindaklanjuti. Terima Kasih._`;
             const urlWa = `https://api.whatsapp.com/send?phone=${NOMOR_WA_TUJUAN}&text=${encodeURIComponent(pesanWa)}`;
+            
+            // Langsung buka WhatsApp di tab baru
+            window.open(urlWa, "_blank");
+            
+            // Kirim data ke Google Script di latar belakang
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(reportData) })
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'sukses') {
-                    alert("Laporan berhasil disimpan dan akan dikirim via WhatsApp.");
-                    window.open(urlWa, "_blank");
+                    console.log("Laporan berhasil disimpan ke riwayat.");
                     this.reset();
                     history.back(); // Kembali ke menu utama setelah sukses
                 } else {
-                    throw new Error(data.message || "Terjadi kesalahan dari server.");
+                    throw new Error(data.message || "Terjadi kesalahan dari server saat menyimpan.");
                 }
             })
             .catch(err => {
+                // Jika gagal, tampilkan error di console, tidak perlu alert karena WA sudah terkirim
                 console.error('Gagal menyimpan laporan:', err);
-                alert('GAGAL menyimpan laporan ke riwayat. Laporan HANYA akan dikirim via WhatsApp.');
-                window.open(urlWa, "_blank");
             })
             .finally(() => {
+                // Aktifkan kembali tombol setelah proses selesai
                 submitButton.disabled = false;
                 submitButton.textContent = "Kirim Laporan Gangguan";
             });
         });
+
         document.getElementById('form-upload').addEventListener('submit', function(e) {
             e.preventDefault();
             const uploadButton = this.querySelector('button');
@@ -320,19 +315,13 @@
             };
         });
 
-        /**
-         * --- PENAMBAHAN BARU ---
-         * Ini adalah 'penjebak' untuk tombol kembali di perangkat/browser.
-         */
         window.addEventListener('popstate', function(event) {
             kembaliKeHalamanMuka();
         });
         
-        // Inisialisasi halaman saat pertama kali dimuat
         const halamanTersimpan = sessionStorage.getItem('halamanAktif');
         if (halamanTersimpan && halamanTersimpan !== 'halaman-muka') {
             tampilkanHalaman(halamanTersimpan);
-            // Pastikan ada state awal untuk kembali
             history.replaceState({page: halamanTersimpan}, null, "#" + halamanTersimpan);
         } else {
             kembaliKeHalamanMuka();
