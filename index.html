@@ -248,7 +248,7 @@
                 deskripsi: document.getElementById("deskripsi-masalah").value
             };
             const pesanWa = `*LAPORAN GANGGUAN SIARAN*\n\n*Nama Petugas Pemancar:* ${reportData.nama}\n*Tanggal & Waktu:* ${reportData.waktuLengkap}\n*Jenis Gangguan:* ${reportData.jenis}\n*Deskripsi Masalah:*\n${reportData.deskripsi}\n\n_Mohon segera ditindaklanjuti. Terima Kasih._`;
-            const urlWa = https://api.whatsapp.com/send=$6285248766203&text=${encodeURIComponent(pesanWa)}`;
+            const urlWa = `https://wa.me/6285248766203&text=${encodeURIComponent(pesanWa)}`;
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(reportData) })
             .then(res => res.json())
             .then(data => {
